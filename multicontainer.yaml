@@ -1,4 +1,15 @@
+version: '3.9'
 services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URL=mongodb://admin:admin@mongodb:27017/signup
+    restart: always 
+
   mongodb:
     container_name: mongodb
     image: mongo
@@ -16,11 +27,12 @@ services:
     environment:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
       - ME_CONFIG_MONGODB_ADMINPASSWORD=admin
-      - ME_CONFIG_MONGODB_URL=mongodb://admin:admin@mongodb:27017/
+      - ME_CONFIG_MONGODB_URL=mongodb://admin:admin@mongodb:27017/signup
     ports:
       - "8081:8081"
     depends_on:
       - mongodb
+    restart: always   
 
 volumes:
   mongo-data:
