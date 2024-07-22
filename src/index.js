@@ -4,15 +4,16 @@ const bodyParser = require('body-parser');
 const path = require('path'); // Add this line
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
+const mongoUrl = 'mongodb://mongodb:27017/signup';
+// const mongoUrl = process.env.MONGO_URL || 'mongodb://admin:admin@mongodb:27017/signup';
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const mongoUrl = process.env.MONGO_URL || 'mongodb://admin:admin@mongodb:27017/signup';
-mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongoUrl)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Failed to connect to MongoDB', err));
-
 
 const signupSchema = new mongoose.Schema({
   username: String,
